@@ -1,10 +1,12 @@
 #include "header.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main() {
   int menu = 0, ML_num = 0, Word_num = 0, Noun_num = 0, Verb_num = 0, Adj_num = 0, i = 0;
   char *current_mad_lib[MAXWORDS];
+  char line[MAXLINE];
   FILE *mad_lib_save;
   
   printf("Welcome to the Mad Lib Generator!\n");
@@ -15,6 +17,7 @@ int main() {
     printf("[3] Display stats.\n");
     printf("[4] Exit program and display final stats.\n");
     scanf("%d", &menu);
+    getchar();
     
     switch (menu) {
       case 1:
@@ -25,7 +28,7 @@ int main() {
         
         mad_lib_save = fopen("mad_libs.txt", "w");
         while (current_mad_lib[i] != NULL) {
-          fputs(current_mad_lib[i], mad_lib_save);
+          fprintf(mad_lib_save, "%s", current_mad_lib[i]);
           fputs(" ", mad_lib_save);
           if ((i+1)%10 == 0) {
             fputs("\n", mad_lib_save);
@@ -36,11 +39,13 @@ int main() {
         fclose(mad_lib_save);
         break;
       case 2:
-        mad_lib_save = fopen("mad_libs.txt", "w");
-        for (i = 0; i < sizeof(current_mad_lib); i++) {
-        		fprintf(mad_lib_save, "%s", current_mad_lib[i]); 
+        printf("\n");
+        mad_lib_save = fopen("mad_libs.txt", "r");
+        while (fgets(line, MAXLINE, mad_lib_save) != NULL) {
+    		  printf("%s", line);
         }
 				fclose(mad_lib_save);
+        printf("\n\n");
         break;
       case 3:
         dispstats(ML_num, Word_num, Noun_num, Verb_num, Adj_num);

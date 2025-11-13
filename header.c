@@ -1,6 +1,7 @@
 #include "header.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void dispstats(int ml_num, int words, int nouns, int verbs, int adjs) {
   printf("You have filled out %d Mad Libs!\n", ml_num);
@@ -25,14 +26,24 @@ void getMadLib(char *curr_mad_lib[MAXWORDS], int ml_num, int *nouns, int *verbs,
             free(curr_mad_lib[i]);
             break;
         }
-	
   }
 }
 
-void fillMadLib(char *curr_mad_lib[MAXWORDS]) {
+void fillMadLib(char *curr_mad_lib[]) {
   int i;
   char word[MAXWORDLENGTH];
-  for (i = 0; i < sizeof(curr_mad_lib; i++)) {
-    
+  
+  while (getchar() != '\n'){
+    getchar();
+  }
+  
+  for(i = 0; curr_mad_lib[i] != NULL; i++) {
+    if (curr_mad_lib[i][0] == '(') {
+      printf("Please enter a %s: ", curr_mad_lib[i]);
+      if (fgets(word, MAXWORDLENGTH, stdin) != NULL) {
+        word[strcspn(word, "\n")] = '\0';
+      }
+      strcpy(curr_mad_lib[i], word);
+    }
   }
 }
