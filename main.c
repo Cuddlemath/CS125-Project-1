@@ -4,8 +4,12 @@
 #include <string.h>
 
 int main() {
-  int menu = 0, ML_num = 0, Word_num = 0, Noun_num = 0, Verb_num = 0, Adj_num = 0, i = 0;
-  char *current_mad_lib[MAXWORDS];
+  int menu = 0, ML_num = 0, Word_num = 0, i;
+  char **current_mad_lib = malloc(MAXWORDS * sizeof(char *));
+  if (!current_mad_lib) {
+    printf("Memory error!\n");
+    return 1;
+  }
   char line[MAXLINE];
   FILE *mad_lib_save;
   
@@ -17,15 +21,17 @@ int main() {
     printf("[3] Display stats.\n");
     printf("[4] Exit program and display final stats.\n");
     scanf("%d", &menu);
-    getchar();
+
     
     switch (menu) {
       case 1:
-        getMadLib(current_mad_lib, ML_num, &Noun_num, &Verb_num, &Adj_num);
+        
+        getMadLib(current_mad_lib, &ML_num);
         ML_num++;
         
-        fillMadLib(current_mad_lib);
+        fillMadLib(current_mad_lib, &Word_num);
         
+        i = 0;
         mad_lib_save = fopen("mad_libs.txt", "w");
         while (current_mad_lib[i] != NULL) {
           fprintf(mad_lib_save, "%s", current_mad_lib[i]);
@@ -48,16 +54,21 @@ int main() {
         printf("\n\n");
         break;
       case 3:
-        dispstats(ML_num, Word_num, Noun_num, Verb_num, Adj_num);
+        dispstats(ML_num, Word_num);
         break;
       case 4:
-        printf("Thank you for using the Mad Lib Generator! Here are your final stats:");
-        dispstats(ML_num, Word_num, Noun_num, Verb_num, Adj_num);
+        printf("Thank you for using the Mad Lib Generator! \nHere are your final stats:\n");
+        dispstats(ML_num, Word_num);
         return 0;
       default:
         printf("Invalid menu option. Try again.");
     }
+    clearInputBuffer();
   }
+  for (i = 0; current_mad_lib[i] != NULL; i++) {
+    free(current_mad_lib);
+  }
+  free(current_mad_lib);
   return 0;
 }
 
