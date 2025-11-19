@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Wall -ansi
 
 # Output executable file
-TARGET = Prj1Test
+TARGET = Mad_Polar_Bears
 
 # Source files
 SRC = main.c header.c
